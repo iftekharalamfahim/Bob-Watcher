@@ -1,0 +1,25 @@
+{
+  "sprint": 1,
+  "description": "Hackathon demo build — Bob Mistake Learner",
+  "inScope": [
+    "MCP server with get_briefing and validate_code tools",
+    "rules engine that calls watsonx.ai to summarise corrections",
+    "briefing generator that compiles BOB_BRIEFING.md from registry.json",
+    "VS Code extension that captures code corrections into raw_log.json",
+    "Bob custom mode Team Dev Mode",
+    "scope.json sprint management",
+    "bob_sessions export for judging"
+  ],
+  "outOfScope": [
+    "user authentication or login system",
+    "cloud deployment or hosting",
+    "mobile application",
+    "email verification",
+    "OAuth integration",
+    "frontend dashboard or UI",
+    "database setup or configuration",
+    "payment system",
+    "third party integrations beyond watsonx.ai",
+    "automated testing suite"
+  ]
+}
