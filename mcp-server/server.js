@@ -49,6 +49,33 @@ server.registerTool(
   }
 );
 
+// HELPER: Load rules from registry
+const loadRules = async () => {
+  try {
+    await fs.promises.access(REGISTRY);
+    const raw = await fs.promises.readFile(REGISTRY, "utf8");
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+};
+
+// HELPER: Check if code violates a rule
+const matchesRule = (rule, code) => {
+  const r = rule.rule.toLowerCase();
+  
+  if ((r.includes("never use var") || r.includes("always use const")) && PATTERNS.varUsage.test(code)) {
+    return true;
+  }
+  if ((r.includes("arrow function") || r.includes("never use regular function")) && PATTERNS.regularFunc.test(code)) {
+    return true;
+  }
+  if ((r.includes("mysql") || r.includes("postgresql") || r.includes("postgres")) && PATTERNS.mysqlSyntax.test(code)) {
+    return true;
+  }
+  return false;
+};
+
 //  TOOL 2: validate_code
 server.registerTool(
   "validate_code",
@@ -59,47 +86,28 @@ server.registerTool(
     },
   },
   async ({ code }) => {
-    let rules = [];
-
-    try {
-      await fs.promises.access(REGISTRY);
-      const raw = await fs.promises.readFile(REGISTRY, "utf8");
-      rules = JSON.parse(raw);
-    } catch {
+    const rules = await loadRules();
+    
+    if (!rules) {
       return {
         content: [{ type: "text", text: "No rules registry found. Skipping validation." }],
       };
     }
 
-    const violations = new Set();
+    const violations = rules
+      .filter(rule => matchesRule(rule, code))
+      .map(rule => `VIOLATION: ${rule.rule}`);
 
-    rules.forEach((rule) => {
-      const r = rule.rule.toLowerCase();
-
-      if ((r.includes("never use var") || r.includes("always use const")) && PATTERNS.varUsage.test(code)) {
-        violations.add(`VIOLATION: ${rule.rule}`);
-      }
-
-      if ((r.includes("arrow function") || r.includes("never use regular function")) && PATTERNS.regularFunc.test(code)) {
-        violations.add(`VIOLATION: ${rule.rule}`);
-      }
-
-      if ((r.includes("mysql") || r.includes("postgresql") || r.includes("postgres")) && PATTERNS.mysqlSyntax.test(code)) {
-        violations.add(`VIOLATION: ${rule.rule}`);
-      }
-    });
-
-    if (violations.size === 0) {
+    if (violations.length === 0) {
       return {
         content: [{ type: "text", text: "Code passed all team rule checks. Safe to show developer." }],
       };
     }
 
-    const violationList = [...violations].join("\n");
     return {
       content: [{
         type: "text",
-        text: `Found ${violations.size} rule violation(s):\n\n${violationList}\n\nFix these before showing the developer.`,
+        text: `Found ${violations.length} rule violation(s):\n\n${violations.join("\n")}\n\nFix these before showing the developer.`,
       }],
     };
   }
