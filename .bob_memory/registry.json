@@ -1,0 +1,9 @@
+[
+  {
+    "id": "rule_001",
+    "rule": "Always use const instead of var.",
+    "category": "syntax",
+    "count": 2,
+    "priority": "high"
+  }
+]
