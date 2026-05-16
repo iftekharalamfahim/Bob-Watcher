@@ -11,13 +11,6 @@ const path = require("path");
 const BRIEFING = path.join(process.cwd(), ".bob_memory", "BOB_BRIEFING.md");
 const REGISTRY = path.join(process.cwd(), ".bob_memory", "registry.json");
 
-// PRE-COMPILED REGEXES 
-const PATTERNS = {
-  varUsage:    /\bvar\s+/,
-  regularFunc: /\bfunction\s+\w+\s*\(/,
-  mysqlSyntax: /AUTO_INCREMENT|ENGINE\s*=\s*InnoDB/i,
-};
-
 // SERVER SETUP
 const server = new McpServer({
   name: "bob-memory",
@@ -60,22 +53,6 @@ const loadRules = async () => {
   }
 };
 
-// HELPER: Check if code violates a rule
-const matchesRule = (rule, code) => {
-  const r = rule.rule.toLowerCase();
-  
-  if ((r.includes("never use var") || r.includes("always use const")) && PATTERNS.varUsage.test(code)) {
-    return true;
-  }
-  if ((r.includes("arrow function") || r.includes("never use regular function")) && PATTERNS.regularFunc.test(code)) {
-    return true;
-  }
-  if ((r.includes("mysql") || r.includes("postgresql") || r.includes("postgres")) && PATTERNS.mysqlSyntax.test(code)) {
-    return true;
-  }
-  return false;
-};
-
 //  TOOL 2: validate_code
 server.registerTool(
   "validate_code",
@@ -94,21 +71,32 @@ server.registerTool(
       };
     }
 
-    const violations = rules
-      .filter(rule => matchesRule(rule, code))
-      .map(rule => `VIOLATION: ${rule.rule}`);
+    // Format rules as a numbered list
+    const rulesList = rules
+      .map((rule, index) => `${index + 1}. ${rule.rule}`)
+      .join("\n");
 
-    if (violations.length === 0) {
-      return {
-        content: [{ type: "text", text: "Code passed all team rule checks. Safe to show developer." }],
-      };
-    }
+    // Create prompt for Bob to reason about rule violations
+    const prompt = `You are validating the following code against team rules.
+
+TEAM RULES:
+${rulesList}
+
+CODE TO VALIDATE:
+\`\`\`
+${code}
+\`\`\`
+
+INSTRUCTIONS:
+Analyze the code carefully against each rule. If any rule is violated:
+- State which specific rule number is violated
+- Explain why it violates that rule
+- Provide the corrected code
+
+If no rules are violated, respond with exactly: "Code passed all team rule checks."`;
 
     return {
-      content: [{
-        type: "text",
-        text: `Found ${violations.length} rule violation(s):\n\n${violations.join("\n")}\n\nFix these before showing the developer.`,
-      }],
+      content: [{ type: "text", text: prompt }],
     };
   }
 );
