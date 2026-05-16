@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "bob-memory": {
+      "command": "node",
+      "args": ["mcp-server/server.js"],
+      "disabled": false,
+      "alwaysAllow": ["get_briefing", "validate_code"]
+    }
+  }
+}
