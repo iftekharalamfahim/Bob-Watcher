@@ -181,7 +181,7 @@ The `.bob/mcp.json` file is already configured in the repository. When you open 
 1. Go to **Settings → Modes → Create new mode**
 2. Fill in:
    - **Slug:** `team-dev-mode`
-   - **Name:** `Team Dev Mode`
+   - **Name:** `🕵️ Watcher`
    - **Scope:** Project
    - **Rule definition:** *(paste below)*
 

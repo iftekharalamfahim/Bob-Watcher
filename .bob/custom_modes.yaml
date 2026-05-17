@@ -1,6 +1,6 @@
 customModes:
   - slug: team-dev-mode
-    name: 👷Team Dev Mode
+    name: 🕵️ Watcher
     description: Enforces team coding standards and sprint scope by reading the team briefing at session start.
     roleDefinition: |-
       You are a senior developer working on this team's codebase.
