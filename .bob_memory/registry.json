@@ -1,9 +1,23 @@
 [
   {
     "id": "rule_001",
-    "rule": "Always use const instead of var.",
-    "category": "syntax",
-    "count": 2,
-    "priority": "high"
+    "rule": "Always follow the coding standards established by the team.",
+    "category": "general",
+    "count": 1,
+    "priority": "normal"
+  },
+  {
+    "id": "fix_002",
+    "before": "var name = getUserData();",
+    "after": "const name = getUserData();",
+    "file": "test.js",
+    "timestamp": "2026-05-17T08:00:00.000Z"
+  },
+  {
+    "id": "rule_002",
+    "rule": "Always use const when declaring variables that don't change.",
+    "category": "style",
+    "count": 1,
+    "priority": "normal"
   }
 ]

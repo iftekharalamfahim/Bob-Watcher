@@ -34,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
   });
   
   // Task 3: Add save watcher to detect diffs
-  const saveWatcher = vscode.workspace.onDidSaveTextDocument(async (document) => {
+  const saveWatcher = vscode.workspace.onDidSaveTextDocument(async (document: vscode.TextDocument) => {
     // Return early if no Bob code is marked or if it's a different file
     if (!bobOriginal || document.fileName !== bobFile) {
       return;
