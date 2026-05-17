@@ -407,10 +407,10 @@ Bob-Watcher/
 
 | Name | Role |
 |------|------|
-| Iftekhar Alam Fahim (brainsect) | Team Lead & MCP server Creator |
-| Loo Chun Qian (augustloo) | Bobs rules engine |
-| Ridoy Kumar Adhikary (ridoy_adhikary) | VSCode Extension Generator |
-| Rafi Ahmed (codewithrafi) | BOB_Briefing.md Generator |
+| Iftekhar Alam Fahim (brainsect) | Team Lead & MCP server Creator (dev D) |
+| Loo Chun Qian (augustloo) | Bobs rules engine (Dev B) |
+| Ridoy Kumar Adhikary (ridoy_adhikary) | VSCode Extension Generator (Dev A) |
+| Rafi Ahmed (codewithrafi) | BOB_Briefing.md Generator (Dev C) |
 | Muhammad (muhammad9) | Advisor & Project Idea |
 
 Built at the IBM Bob Hackathon — May 2026
