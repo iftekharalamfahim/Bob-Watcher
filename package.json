@@ -1,17 +1,57 @@
 {
-  "name": "bob-rules-engine",
+  "name": "bob-watcher",
+  "displayName": "Bob Watcher",
+  "description": "Captures corrections to Bob's AI-generated code",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "engines": {
+    "vscode": "^1.80.0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "bob-watcher.mark",
+        "title": "Mark as Bob Output"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "bob-watcher.mark",
+        "key": "ctrl+shift+b",
+        "mac": "cmd+shift+b"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^6.4.1",
+    "@typescript-eslint/parser": "^6.4.1",
+    "eslint": "^8.47.0",
+    "typescript": "^5.1.6"
+  },
   "dependencies": {
     "@ibm-cloud/watsonx-ai": "^1.7.12",
     "dotenv": "^17.4.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iftekharalamfahim/Bob-Watcher.git"
+  },
+  "bugs": {
+    "url": "https://github.com/iftekharalamfahim/Bob-Watcher/issues"
+  },
+  "homepage": "https://github.com/iftekharalamfahim/Bob-Watcher#readme"
 }
